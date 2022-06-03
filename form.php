@@ -1,5 +1,8 @@
 <?php
-$user_agent     =   $_SERVER['HTTP_USER_AGENT'];
+
+$userAgent = ! empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+$userLang = ! empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '';
+$user_agent = ! empty($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
 
 function getOS() { 
 
@@ -8,6 +11,7 @@ function getOS() {
     $os_platform    =   "Unknown OS Platform";
 
     $os_array       =   array(
+                            '/windows nt 10/i'     =>  'Windows 10',
                             '/windows nt 6.2/i'     =>  'Windows 8',
                             '/windows nt 6.1/i'     =>  'Windows 7',
                             '/windows nt 6.0/i'     =>  'Windows Vista',
@@ -45,11 +49,11 @@ function getOS() {
 
 $user_os  =   getOS(); 
 
-$filename = "db.txt";
+$filename = dirname(__DIR__) . "/test/db.txt";
 
-$txt = "Lat:" . $_GET['lat'] . "," . "Lon:" . $_GET['lon'] . "," . "Loc:" . $_GET['loc'] . "," . "Date:" . $_GET['date'] . "," . "IP:" . $_SERVER['REMOTE_ADDR'] . "," . "User agent:" . $_SERVER['HTTP_USER_AGENT'] . "," . "OS:" . $user_os . "," . "Time:" . "Language:" . $_SERVER['HTTP_ACCEPT_LANGUAGE'] . "'.\n";
+$txt = "Lat:" . $_GET['lat'] . "," . "Lon:" . $_GET['lon'] . "," . "Loc:" . $_GET['loc'] . "," . "Date:" . $_GET['date'] . "," . "IP:" . $_SERVER['REMOTE_ADDR'] . "," . "User agent:" . $userAgent . "," . "OS:" . $user_os . "," . "Time:" . "Language:" . $_SERVER['HTTP_ACCEPT_LANGUAGE'] . "'.\n";
 $file_content = file_get_contents($filename);
 $new_content = $file_content . $txt;
 file_put_contents($filename, $new_content, LOCK_EX);
 
-echo $user_os;
+error_reporting(0);
